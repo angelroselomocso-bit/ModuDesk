@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Products | ModuDesk</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
+<header><div class="wrap"><a class="logo" href="index.html">Modu<span>Desk</span></a>
+<nav><a href="index.html">Home</a><a href="Product.html" class="on">Products</a><a href="About%20Us.html">About Us</a><a href="contact%20us.html">Contact Us</a><a href="Cart.html">Cart<span class="count">0</span></a></nav></div></header>
+<main class="wrap"><section><h2>Products</h2><div class="grid" id="list">
+<div class="card"><div class="swatch" style="background:#16202B"></div><h3>Base Desk</h3><p>140 cm birch-finish top with slotted rails.</p><span class="price">$289</span><button class="btn" data-id="1" data-name="Base Desk">Add to cart</button></div>
+<div class="card"><div class="swatch" style="background:#0E6F68"></div><h3>Drawer Module</h3><p>Soft-close drawer that clips under the rail.</p><span class="price">$119</span><button class="btn" data-id="2" data-name="Drawer Module">Add to cart</button></div>
+<div class="card"><div class="swatch" style="background:#F0B429"></div><h3>Monitor Riser</h3><p>Lifts your screen and stores a keyboard below.</p><span class="price">$79</span><button class="btn" data-id="3" data-name="Monitor Riser">Add to cart</button></div>
+<div class="card"><div class="swatch" style="background:#8FB8B3"></div><h3>Cable Tray</h3><p>Hides power strips and cables in one click.</p><span class="price">$39</span><button class="btn" data-id="4" data-name="Cable Tray">Add to cart</button></div>
+<div class="card"><div class="swatch" style="background:#5B6773"></div><h3>Side Shelf</h3><p>Extra surface for plants, books, or a lamp.</p><span class="price">$99</span><button class="btn" data-id="5" data-name="Side Shelf">Add to cart</button></div>
+<div class="card"><div class="swatch" style="background:#D5DBDA"></div><h3>Desk Mat</h3><p>Felt mat that fits the Base Desk exactly.</p><span class="price">$49</span><button class="btn" data-id="6" data-name="Desk Mat">Add to cart</button></div>
+</div><p class="note" id="msg" role="status"></p></section></main>
+<footer><div class="wrap">&copy; 2026 ModuDesk. Build your desk, your way.</div></footer><script>
+function getCart(){try{return JSON.parse(localStorage.getItem("moduCart"))||{}}catch(e){return{}}}
+function saveCart(c){try{localStorage.setItem("moduCart",JSON.stringify(c))}catch(e){}updateCount()}
+function updateCount(){const n=Object.values(getCart()).reduce((a,b)=>a+b,0);document.querySelectorAll(".count").forEach(e=>e.textContent=n)}
+
+document.getElementById("list").addEventListener("click", e => {
+  const id = e.target.dataset.id;
+  if (!id) return;
+  const c = getCart();
+  c[id] = (c[id] || 0) + 1;
+  saveCart(c);
+  document.getElementById("msg").textContent = e.target.dataset.name + " added to cart.";
+});
+updateCount();
+</script>
+</body>
+</html>

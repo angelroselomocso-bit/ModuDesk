@@ -1,0 +1,28 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cart | ModuDesk</title><link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Familjen+Grotesk:wght@600;700&family=IBM+Plex+Sans:wght@400;600&display=swap" rel="stylesheet"><link rel="stylesheet" href="style.css"></head><body>
+<header><div class="wrap"><a class="logo" href="index.html">Modu<span>Desk</span></a>
+<nav><a href="index.html">Home</a><a href="Product.html">Products</a><a href="About%20Us.html">About Us</a><a href="contact%20us.html">Contact Us</a><a href="Cart.html" class="on">Cart<span class="count">0</span></a></nav></div></header>
+<main class="wrap"><section><h2>Your cart</h2><div id="cart"></div></section></main>
+<footer><div class="wrap">&copy; 2026 ModuDesk. Build your desk, your way.</div></footer><script>
+const ITEMS = {
+  1:{name:"Base Desk",price:289},
+  2:{name:"Drawer Module",price:119},
+  3:{name:"Monitor Riser",price:79},
+  4:{name:"Cable Tray",price:39},
+  5:{name:"Side Shelf",price:99},
+  6:{name:"Desk Mat",price:49}
+};
+function getCart(){try{return JSON.parse(localStorage.getItem("moduCart"))||{}}catch(e){return{}}}
+function saveCart(c){try{localStorage.setItem("moduCart",JSON.stringify(c))}catch(e){}updateCount()}
+function updateCount(){const n=Object.values(getCart()).reduce((a,b)=>a+b,0);document.querySelectorAll(".count").forEach(e=>e.textContent=n)}
+function render(){const c=getCart(),ids=Object.keys(c).filter(i=>c[i]>0),box=document.getElementById("cart");
+if(!ids.length){box.innerHTML='<p>Your cart is empty. <a href="Product.html">Browse products</a></p>';return}
+let total=0;const rows=ids.map(i=>{const p=ITEMS[i],sub=p.price*c[i];total+=sub;
+return `<tr><td>${p.name}</td><td>$${p.price}</td><td class="qty"><button data-a="-" data-id="${i}" aria-label="Decrease">-</button> ${c[i]} <button data-a="+" data-id="${i}" aria-label="Increase">+</button></td><td>$${sub}</td></tr>`}).join("");
+box.innerHTML=`<table><tr><th>Item</th><th>Price</th><th>Qty</th><th>Subtotal</th></tr>${rows}</table><p class="total">Total: <strong>$${total}</strong></p><p class="total"><button class="btn" id="co">Checkout</button></p><p class="note" id="msg" role="status"></p>`;
+document.getElementById("co").onclick=()=>{saveCart({});box.innerHTML='<p class="note">Thanks! Your order is placed (demo).</p>'}}
+document.getElementById("cart").addEventListener("click",e=>{const{a,id}=e.target.dataset;if(!a)return;const c=getCart();c[id]+=a=="+"?1:-1;if(c[id]<=0)delete c[id];saveCart(c);render()});
+updateCount();
+render();
+</script>
+</body>
+</html>
